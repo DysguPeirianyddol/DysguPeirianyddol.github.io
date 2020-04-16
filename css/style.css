@@ -15,6 +15,10 @@ body{
 
 }
 
+a {text-decoration: none;
+	color: inherit;
+}
+
 ul{
 	margin: 0;
 	padding: 0;
@@ -103,6 +107,7 @@ header a:hover{
 	margin-bottom: 10px;
 	border: #ffffff 1px solid;
 }
+
 
 
 /* Footer */
