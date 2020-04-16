@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<a href="https://dysgupeirianyddol.github.io/">
+	<title>Dysgu Peirianyddol</title>
+	</a>
+</head>
+<body>
+<h2>Atchweliad Logistaidd</h2>
+<xmp>
+> install.packages("stats")
+> library(stats)
+</xmp>
+
+<xmp>
+> data <- read.csv("C:/Users/User/Desktop/Dysgu_Peirianyddol/data_logistic.csv")
+</xmp>
+
+<xmp>
+> View(data)
+</xmp>
+
+<xmp>
+> rhifau <- c(1:1000)
+> rhifauymarfer <- sample(x = rhifau, size = 700, replace = FALSE)
+> rhifauprofi <- setdiff(rhifau, rhifauymarfer)
+</xmp>
+
+<xmp>
+> ymarfer <- data[rhifauymarfer,]
+> profi <- data[rhifauprofi,]
+</xmp>
+
+<xmp>
+> atchweliad <- glm(Diabetes ~ Uchder + Pwysau + Oed + Rhyw + MaintGwasg,
++ 					family = binomial,
++ 					data = ymarfer)
+</xmp>
+
+<xmp>
+> atchweliad$coefficients
+ (Intercept)       Uchder      Pwysau         Oed
+22.858432583 -0.254347133 0.215272873 0.057360113
+   RhywGwryw   MaintGwasg
+-8.074052403 -0.003206262
+</xmp>
+
+<xmp>
+> canlyniad <- predict(object = atchweliad, newdata = profi, type = "response")
+> canlyniad <- round(canlyniad, digits = 0)
+> canlyniad <- unname(canlyniad)
+</xmp>	
+
+<xmp>
+> 1-(sum((test[,6]-unname(canlyniad))**2)/length(test[,6]))
+0.8833333
+</xmp>
+
+<xmp>
+> unname(round(predict(object = atchweliad,
++ 					   newdata = data.frame(Uchder = 160,
++ 											Pwysau = 92,
++ 											MaintGwasg = 34,
++ 											Oed = 20,
++ 											Rhyw = "Gwryw"),
++ 					   type = "response"),
++ 		 digits = 0))
++
+0
+</xmp>
+
+<xmp>
+> unname(round(predict(object = atchweliad,
++ 					   newdata = data.frame(Uchder = 160,
++ 											Pwysau = 92,
++ 											MaintGwasg = 34,
++ 											Oed = 20,
++ 											Rhyw = "Benyw"),
++ 					   type = "response"),
++ 			   digits = 0))
++
+1
+</xmp>
+
+<xmp>
+>>> from sklearn.linear_model import LogisticRegression
+>>> import pandas as pd
+</xmp>
+
+<xmp>
+>>> data = pd.read_csv('data_logistic.csv')
+</xmp>
+
+<xmp>
+>>> data.head()
+</xmp>
+
+<xmp>
+>>> data['Rhyw'] = data['Rhyw'].apply(lambda x: int(x =='Gwryw'))
+</xmp>
+
+<xmp>
+>>> ymarfer = data.sample(frac = 0.7)
+>>> profi = data.drop(ymarfer.index)
+</xmp>
+
+<xmp>
+>>> X = ymarfer[['Uchder', 'Pwysau', 'MaintGwasg', 'Oed', 'Rhyw']].as_matrix()
+>>> y = ymarfer['Diabetes'].as_matrix()
+>>> X_profi = profi[['Uchder', 'Pwysau', 'MaintGwasg', 'Oed', 'Rhyw']].as_matrix()
+>>> y_profi = profi['Diabetes'].as_matrix()
+</xmp>
+
+<xmp>
+>>> clf = LogisticRegression(random_state=0).fit(X, y)
+</xmp>
+
+<xmp>
+>>> clf.intercept_
+array([ 1.70933553])
+</xmp>
+
+<xmp>
+>>> clf.coef_
+array([[-0.12384414, 0.14710498, 0.12995053, 0.04682347, -4.80795833]])
+</xmp>
+
+<xmp>
+>>> 1-(sum((clf.predict(X_profi)-y_profi)**2)/len(y_profi))
+0.91666666666666663
+</xmp>
+
+<xmp>
+>>> clf.predict([[171, 130, 40, 40, 1]])
+array([1], dtype=int64)
+</xmp>
+
+<xmp>
+>>> clf.predict([[171, 90, 40, 40,1]])
+array([0], dtype=int64)
+</xmp>
+
+
+</body>
+</html>
