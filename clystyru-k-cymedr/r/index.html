@@ -28,7 +28,136 @@
 		<div class="container">
 			<h1>Clystyru K-Cymedr</h1>
 			<h2>Tiwtorial yn R</h2>
-			<p>testing ia asn n awelsi  ask jaj  als alm maks  mkasm kak makm  asm ka k mka  mkamf kmfmak m</p>
+<p>Mi fyddwn yn edrych ar ddata o daldra a phwysau 175 wahanol berson. Mi allwch chi lawrlwytho y data
+yma o fan hyn: <a href = "https://dysgupeirianyddol.github.io/lawrlwythiadau/">https://dysgupeirianyddol.github.io/lawrlwythiadau/</a></p>
+<p>
+Yno fydd angen lawrlwytho a gosod y pecynnau graphics, stats ag datasets ar eich cyfrifiadur. Ffordd
+hawdd i wirio hyn fydd i ddefnyddio’r côd canlynol:
+</p>
+<div class="codes">
+<code>
+> install.packages("graphics") <br>
+> install.packages("stats")	<br>
+> install.packages("datasets")	<br>
+> library(graphics)	<br>
+> library(stats)	<br>
+> library(datasets)
+</code>
+</div>
+<p>
+Mae’r darn gyntaf o’r côd uchod yn gosod/diweddaru’r pecynnau angenrheidiol. Mae’r ail ddarn yn llwytho’r
+pecynnau i ein sesiwn ni.
+</p>
+<p>
+Nawr mi wnawn lwytho’r data.
+</p>
+<div class="codes">
+<code>
+> taldrapwysau <- read.csv("taldra-pwysau.csv") <br>
+> View(taldrapwysau)
+</code>
+</div>
+<p>
+Mae’r string sydd mewnbwn y ffwythiant read.csv yn cyfeirio at y lleoliad ar ein cyfrifiadur lle gallwn
+ganfod y ffeil csv priodol. Rhaid gwneud yn siŵr eich bod yn defnyddio’r lleoliad cywir i’r lleoliad o’ch ffeil
+chi. Ar ôl rhedeg y côd ddylai eich data edrych yn debyg i’r canlynol:
+</p>
+<img src="../../img/Data_yn_R.jpg">
+<p>
+Gan fod y data hefo enwau ar gyfer y colofnau, gallwn atodi’r data i lwybr chwilio R. Bydd hyn yn gadael i
+ni gyfeirio at enwau colofnau’r data yn ein côd fydd yn gwneud yn lawer mwy symlach i ddeall.
+</p>
+<div class="codes">
+<code>
+> attach(taldrapwysau)
+</code>
+</div>
+<p>
+I wneud fwy o synnwyr o’r data, mi wnawn blotio’r data. Defnyddiwn pch=21 i newid y pwyntiau ar y plot
+i alluogi lliwiau (ar gyfer y labeli hwyrach ymlaen).
+</p>
+<div class="codes">
+<code>
+> plot(Taldra, Pwysau, pch = 21)
+</code>
+</div>
+<p>
+Sy’n rhoi:
+</p>
+<img src="../../img/ScatterplotR.jpeg">
+<p>
+Gwelwn fod yna tri clwstwr clir.
+</p>
+<p>
+Rŵan rydym yn gallu tybio fod y data yn gallu cael i rannu i dri chlwstwr gwahanol, mi wnawn ddefnyddio’r
+algorithm dysgu peirianyddol i’w ddehongli. Rhedwn y canlynol i redeg clystyru k-cymedr yn R. Rydym
+yn defnyddio’r opsiwn nstart i ddewis faint o setiau ar hap o ddata wedi’i labelu wnawn gymered. Welwn
+enghraifft o’r set ar hap hyn yn Darlun 2.1. Rydym yn neud hyn i wneud yn fwy debygol i ni ddarganfod yr
+optimwm eang, mae hyn oherwydd mae yna gymaint o optima lleol.
+</p>
+<div class="codes">
+<code>
+> kcymedr <- kmeans(taldrapwysau,3, nstart = 50)
+</code>
+</div>
+<p>
+Allwn nawr adio colofn newydd i’r data sef y clystyrau newydd mae’r algorithm wedi’i darganfod.
+</p>
+<div class="codes">
+<code>
+> taldrapwysau$Clwstwr3 <- kcymedr$cluster
+</code>
+</div>
+<p>
+Gallwn weld y newid hwn gan ddefnyddio’r un côd a ddefnyddion yn gynharach.
+</p>
+<div class="codes">
+<code>
+> View(taldrapwysau)
+</code>
+</div>
+<img src="../../img/Data3_yn_R.jpg">
+<p>
+Mae’n bosib fydd yr algorithm wedi labeli’r clystyrau gwahanol gyda rhifau gwahanol i’r hyn a welwch fan
+hyn, ddylai’r clystyrau ei hun fod yn hafal. Mae hyn oherwydd y setiau ar hap cychwynnol mae’r algorithm
+yn ei gymered i gychwyn.
+</p>
+<p>
+Rhedwn y côd canlynol liwio’r clystyrau newydd ar graff.
+</p>
+<div class="codes">
+<code>
+> plot(Taldra, Pwysau, pch = 21, bg=c("red","green","blue")[unclass(kcymedr$cluster)])
+</code>
+</div>
+<p>
+Sy’n rhoi:
+</p>
+<img src="../../img/3clwstwrR.jpeg">
+<p>
+I gymharu, nawr mi nawn rhedeg yr algorithm ar gyfer 6 clwstwr i weld y clystyrau pan fydd k = 6.
+</p>
+<div class="codes">
+<code>
+> kcymedr <- kmeans(taldrapwysau,6, nstart = 50) <br>
+> taldrapwysau$Clwstwr6 <- kcymedr$cluster <br>
+> View(taldrapwysau)
+</code>
+</div>
+<img src="../../img/Data6_yn_R.jpg">
+<p>
+Gwelwn fod y labeli newydd wedi cael ei ychwanegu i’n tabl. Yna gan blotio graff arall, fedrem weld y 6
+clwstwr yn gliriach.
+</p>
+<div class="codes">
+<code>
+> lliwiau <- c("red","green","blue", "yellow", "black", "white") <br>
+> plot(Taldra, Pwysau, pch = 21, bg=lliwiau[unclass(kcymedr$cluster)])
+</code>
+</div>
+<p>Sy’n rhoi:</p>
+<img src="../../img/6clwstwrR.jpeg">
+
 		</div>
 	</section>
 

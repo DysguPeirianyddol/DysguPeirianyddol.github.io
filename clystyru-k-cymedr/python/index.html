@@ -28,7 +28,119 @@
 		<div class="container">
 			<h1>Clystyru K-Cymedr</h1>
 			<h2>Tiwtorial yn Python</h2>
-			<p>testing ia asn n awelsi  ask jaj  als alm maks  mkasm kak makm  asm ka k mka  mkamf kmfmak m</p>
+<p>Yn y tiwtorial hwn mi wnawn edrych ar ddata o daldra a phwysau 175 wahanol berson. Mi allwch chi
+lawrlwytho y data yma o fan hyn: <a href="https://dysgupeirianyddol.github.io/lawrlwythiadau/">https://dysgupeirianyddol.github.io/lawrlwythiadau/</a> I gychwyn
+bydd rhaid llwytho’r pecynnau pandas, matplotlib.pyplot ag sklearn.cluster drwy redeg y côd canlynol:</p>
+<div class="codes">
+<code>
+>>> import pandas as pd <br>
+>>> import matplotlib.pyplot as plt <br>
+>>> import sklearn.cluster
+</code>
+</div>
+<p>
+Y rŵan mi wnawn lwytho’r data i mewn i’n gwaith gan redeg y côd:
+</p>
+<div class="codes">
+<code>
+>>> data = pd.read_csv('taldra-pwysau.csv')
+</code>
+</div>
+<p>
+Mae’r string sydd mewnbwn y ffwythiant pd.read_csv yn cyfeirio at y lleoliad ar ein cyfrifiadur lle gallwn
+ganfod y ffeil csv priodol. Rhaid gwneud yn siŵr eich bod yn defnyddio’r lleoliad cywir i’r lleoliad o’ch ffeil
+chi. Unwaith fydd wedi cael ei llwytho, allwn ni gweld yn fras y data gennym ni.
+</p>
+<div class="codes">
+<code>
+>>> data.head()
+</code>
+</div>
+<img src="../../img/tabl1.jpg">
+<p>
+I weld y data mewn ffordd fwy gweledol, wnawn blotio graff gwasgariad o’r data.
+</p>
+<div class="codes">
+<code>
+>>> plt.scatter(data['Taldra'], data['Pwysau']); <br>
+>>> plt.xlabel('Taldra') <br>
+>>> plt.ylabel('Pwysau') <br>
+>>> plt.show()
+</code>
+</div>
+<img src="../../img/ScatterPython.jpeg">
+<p>
+Fel gwelwn, mae’r data yn edrych fel ei fod mewn tri chlwstwr. Felly wnawn ddefnyddio’r ffurf algorithm
+dysgu peirianyddol i’w labelu.
+</p>
+<div class="codes">
+<code>
+>>> kmeans = sklearn.cluster.KMeans(n_clusters=3).fit(data) <br>
+>>> data['Cluster (k=3)'] = kmeans.predict(data)	
+</code>
+</div>
+<p>
+Gallwn weld y newid hwn gan ddefnyddio’r un côd a ddefnyddion yn gynharach.
+</p>
+<div class="codes">
+<code>
+>>> data.head()
+</code>
+</div>
+<img src="../../img/tabl2.jpg">
+<p>
+Fel y gwelwyd, mae’r data wedi’i rhoi i mewn i dri chlwstwr ac wedi’i labelu gyda rhif y clwstwr. Gan fod
+pob pwynt yn y data nawr gyda label, allwn ni creu’r plot eto ond gyda bob clwstwr yn lliw gwahanol.
+</p>
+<div class="codes">
+<code>
+>>> plt.scatter(data['Taldra'], data['Pwysau'], c=data['Cluster (k=3)']); <br>
+>>> plt.xlabel('Taldra') <br>
+>>> plt.ylabel('Pwysau') <br>
+>>> plt.show()
+</code>
+</div>
+<p>
+Sy’n rhoi:
+</p>
+<img src="../../img/3clystwrpython.jpeg">
+<p>
+Fel y gwelwn, gweithiodd yr algorithm yn wych. Wnawn nawr trio clystyru k-cymedr gyda k yn hafal i
+6.
+</p>
+<div class="codes">
+<code>
+>>> kmeans = sklearn.cluster.KMeans(n_clusters=6).fit(data) <br>
+>>> data['Cluster (k=6)'] = kmeans.predict(data)
+</code>
+</div>
+<p>
+Sy’n rhoi:
+</p>
+<div class="codes">
+<code>
+>>> data.head()
+</code>
+</div>
+<img src="../../img/tabl3.jpg">
+<p>
+Gallwn hefyd gweld canlyniad rhoi’r data i mewn i 6 clwstwr gwahanol:
+</p>
+<div class="codes">
+<code>
+>>> plt.scatter(data['Taldra'], data['Pwysau'], c=data['Cluster (k=6)']); <br>
+>>> plt.xlabel('Taldra') <br>
+>>> plt.ylabel('Pwysau') <br>
+>>> plt.show()
+</code>
+</div>
+<p>
+Sy’n rhoi:
+</p>
+<img src="../../img/6clystwrpython.jpeg">
+<p>
+Dyma sut y mae’r data yn edrych ar ôl phrosesu drwy glystyru 6-cymedr.
+</p>
 		</div>
 	</section>
 

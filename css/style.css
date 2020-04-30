@@ -24,6 +24,30 @@ ul{
 	padding: 0;
 }
 
+ol{
+	margin-left: auto;
+	font-size: 20px;
+	font-family: Helevetica;
+	text-align: left;
+}
+
+.codes{
+	padding: 5px;
+	background-color: white;
+	text-align: left;
+	border: #5F7470 1px solid;
+}
+
+
+th{
+	font-size: 20px;
+	font-family: Helevetica;
+	font-weight: bold;
+}
+td{
+	font-size: 20px;
+}
+
 /* Header */
 header{
 	background: #5F7470;

@@ -8,6 +8,9 @@
 	<meta name="author" content="Alun Owen">
 	<title>Dysgu Peirianyddol | Croeso</title>
 	<link rel="stylesheet" href="../css/style.css">
+	<script type="text/javascript"
+     src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
 </head>
 <body>
 	<header>
@@ -27,7 +30,120 @@
 	<section id="showcase">
 		<div class="container">
 			<h1>Clystyru K-Cymedr</h1>
-			<p>testing ia asn n awelsi  ask jaj  als alm maks  mkasm kak makm  asm ka k mka  mkamf kmfmak m</p>
+<h2>Cefndir</h2>
+<p>
+Mae clystyru k-cymedr yn ffordd o ddysgu heb oruchwyliaeth, mae’n cymryd data heb ei labelu ac yn eu
+sortio i mewn i k wahanol glwstwr yn yr obaith i ddarganfod rhyw strwythur doedden ddim yn gwybod yn
+gynharach.
+</p>
+<p>
+I roi enghraifft gwelwch Ddarlun 2.1. Mae’r gwerthoedd ar echelin x yn cynrychioli taldra person a’r echelin
+y yn cynrychioli pwysau’r person. Fel gwelwn yn y llun ar y chwith gallwn weld tri grŵp naturiol wedi’i
+ffurfio. Rydym nawr eisiau eu grwpio yn ffurf fathemategol. Mae clystyru k-cymedr yn medru dosrannu’r
+tri grŵp fel gwelwn ar ochr dde’r darlun.
+</p>
+<figure>
+<img src="../img/lluniwefan.jpeg">
+<figcaption>Darlun 2.1</figcaption>
+</figure>
+<h2>Y Dull</h2>
+<p>
+Mae clystyru k-cymedr yn syml, mae ond yn dilyn pedwar cam. I wneud yn siŵr fod yn ei ffurf fwyaf
+sythweledol, fyddan yn defnyddio mesur pellter Ewclidaidd. Yn ogystal mae rhaid dewis k cyn cychwyn y proses. Mae’n bosib optimeiddio’r dewis o k, a gwnawn drafod hyn hwyrach ymlaen. Dyma bedwar cam yr algorithm a sut maent yn edrych pan fyddwn ni’n defnyddio’r algorithm ar y data y gwelwn yn 2.1:
+</p>
+<ol>
+<li>Aseinio pob elfen i un o’r k clystyrau ar hap.</li>
+<figure>
+	<img src="../img/Cam1.jpeg">
+	<figcaption>Darlun 2.2</figcaption>
+</figure>
+<li>Cyfrifo canolbwynt (hynny yw craidd) pob clwstwr.</li>
+<figure>
+	<img src="../img/ClystyrauCychwynol.jpeg">
+	<figcaption>Darlun 2.3</figcaption>
+</figure>
+<li>Ail-aseinio pob elfen unwaith eto i’r clwstwr gyda craidd agosaf.</li>
+<figure>
+	<img src="../img/Cam3.jpeg">
+	<figcaption>Darlun 2.4</figcaption>
+</figure>
+<li>Ailadrodd camau dau a tri tan fod y creiddiau ddim yn symud rhagor.</li>
+<figure>
+	<img src="../img/Convergence4.jpeg">
+	<figcaption>Darlun 2.5</figcaption>
+</figure>
+</ol>
+<h2>Yr Algorithm</h2>
+<p>
+Diffiniwn bob clwstwr rydym yn ceisio darganfod fel C<sub>i</sub> lle bydd i ∈ {1, 2, . . . , k}, mae gennym hefyd n
+pwyntiau data x<sub>1</sub>, x<sub>2</sub>, . . . , x<sub>n</sub>. Gadewch i c<sub>i</sub> bod yn bwynt sy’n graidd i clwstwr C<sub>i</sub>. Ar gyfer y cam cyntaf
+angen aseinio pob x<sub>j</sub> i ryw glwstwr C<sub>i</sub> ar hap. Diffiniwn Si fel y set o bwyntiau data sydd wedi’i aseinio i
+glwstwr C<sub>i</sub>. Yna gan ein bod yn datgelu ein bod yn delio gyda phlân Ewclidaidd, mi fyddem yn darganfod
+craidd pob clwstwr gan y fformiwla ganlynol:
+</p>
+$$c_i = \frac{1}{|S_i|}\sum_{\mathbf{x}_j \in S_i} {\mathbf{x}_j}$$
+<p>
+Yn y fformiwla uchod, gwelwn fod fectorau yn cael eu symio. Fyddem yn gwneud hyn gan symio dros
+elfennau, hynny yw </p>
+<p>
+(x<sub>1</sub>, x<sub>2</sub>, . . . , x<sub>n</sub>) + (y<sub>1</sub>, y<sub>2</sub>, . . . , y<sub>n</sub>) = (x<sub>1</sub> + y<sub>1</sub>, x<sub>2</sub> + y<sub>2</sub>, . . . , x<sub>n</sub> + y<sub>n</sub>).
+</p>
+<p>
+Nawr mae gan bob clwstwr craidd newydd, fedrwn aseinio pob pwynt data i’r craidd agosaf. Caiff hyn ei
+gwneud gan fynd drwy bob pwynt data a chyfrifo’r pellter Ewclidaidd 1 i bob canolbwynt. Yna fydd y pwynt
+priodol yn cael ei labelu gyda’r clwstwr sydd a’r pellter lleiaf o’i graidd i’r pwynt data. Hynny yw
+</p>
+$$\arg \min_{c_i} ||c_i, \mathbf{x}_j||^2$$
+<p>
+Unwaith mae’r proses wedi’i chychwyn, angen ailadrodd y darn o ddarganfod y creiddiau newydd ac ail
+labelu’r pwyntiau data tan fod y creiddiau ddim yn symyd rhagor.
+</p>
+<h2>Sut i ddarganfod y k orau?</h2>
+<p>
+Mae yna wahanol ffurf i ddarganfod k, y ffordd fwyaf syml yw dadansoddi clystyrau drwy edrych ar y plot.
+Y broblem yw pan fydd y dimensiwn yn fwy nag tri, yna fydd rhaid edrych am ddulliau mwy mathemategol,
+edrychwn ar ddau wahanol ffordd.
+</p>
+<h2>Dull Penelin</h2>
+<p>
+Mae’r dull penelin yn cymharu’r cyfanswm o swm sgwariau o fewn y clystyrau. Unwaith gennym y cyfanswm
+o swm sgwariau o fewn clystyrau i bob k rydym eisiau cymharu, fyddem yn creu plot o bob k yn erbyn y
+cyfanswm o swm sgwariau o fewn y clystyrau ar gyfer y k hynny. Fydd swm sgwariau ar gyfer clwstwr Ci
+yn cael ei darganfod gan symio y pellter rhwng y craidd ci a phob xj yn ei tro ag yno ei sgwario fel welwn
+yn y fformiwla:
+</p>
+$$ SS_{i} = \sum_{j=1}^{n} (\mathbf{x}_{j}-\mathbf{c}_i)^{2} $$
+<p>
+Unwaith mae gennym y graff, allwn ei ddadansoddi.
+</p>
+<figure>
+	<img src="../img/Dull_Penelin.jpeg">
+	<figcaption>Darlun 2.6</figcaption>
+</figure>
+<p>
+Yn y graff yn Narlun 2.6, gwelwn fod swm sgwariau yn fawr yn cychwyn gyda k=1 sydd yn gwneud synnwyr
+gan fod allanolion o unrhyw set yn cyfrannu i werth fawr o’r swm sgwariau gan ein fod methu cael ei ystyried
+pan does dim on un craidd i’w sortio. O’r pwynt yma wedyn fydd yna newid mawr yn y swm sgwariau.
+Unwaith mae’r newid mawr hwn yn dod i ben fydd gennym ongl yn cael ei greu lle bydd newid k dim ond
+yn creu newid bach. Y pwynt yma fydd yr optimwm ar gyfer nifer k o glystyrau. Fel gwelwn yn glir yn ein
+henghraifft ni, mae’n glir fod K=3 yw dewis orau ar K.
+</p>
+<h2>Dendrogram</h2>
+<p>
+Mae dendrogram yn ffordd wahanol i arddangos yr opsiwn orau o k. Mae’n defnyddio darn o glystyru
+hierarchaidd i greu diagram canghennog. Mae’r echelin llorweddol yn dangos pob gwrthrych yn ein set o
+ddata. Mae’r echelin fertigol yn dangos mesur o annhebygrwydd, gall hyn fod yn fesuriad o swm sgwariau.
+Mae Darlun 2.7 yn dangos dendogram ar gyfer yr un data.
+</p>
+<figure>
+	<img src="../img/Dendrogram.jpeg">
+	<figcaption>Darlun 2.7</figcaption>
+</figure>
+<p>
+I ddadansoddi’r dendrogram mi fyddwn edrych yn bennaf ar yr echelin fertigol. Edrychwn allan am yr
+annhebygrwydd fwyaf rhwng cyflwyniad o gangen arall yn y goeden. Welwn ni hyn yn ein henghraifft ni ar
+ôl i’r drydydd clwstwr cael ei gyflwyno yn dendrogram. Mae hyn yn datganu’r un peth a’r dull penelin.
+</p>
 		</div>
 	</section>
 

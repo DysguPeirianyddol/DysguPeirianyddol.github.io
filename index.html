@@ -26,8 +26,107 @@
 
 	<section id="showcase">
 		<div class="container">
-			<h1>Wefan yn cynnwys algorithmau dysgu peirianyddol</h1>
-			<p>testing ia asn n awelsi  ask jaj  als alm maks  mkasm kak makm  asm ka k mka  mkamf kmfmak m</p>
+			<h1>Beth yw Dysgu Peirianyddol</h1>
+<p>
+Yn syml, dysgu peirianyddol yw algorithmau i optimeiddio rhyw feini prawf gan ddefnyddio data. Mae rhain yn cynnwys model wedi’i ddiffinio o rhai paramedrau mesuradwy, a’r darn dysgu fydd i optimeiddio gyda pharch tuag at y paramedrau hyn. Gall y model fod yn un disgrifiadol o’r data, neu un sy’n rhagfynegi rhyw agwedd o’r data. Mae dysgu peirianyddol yn defnyddio ystadegaeth i adeiladu’r modelau mathemategol, ac mae cyfrifiadureg yn edrych mwy i mewn i effeithiolrwydd y proses.
+</p>
+<p>
+Nid yw dysgu peirianyddol yn faes newydd, mae wedi bod o gwmpas ers y 50au pan wnaeth Arthur Samuel o IBM creu rhaglen ar y cyfrifiadur i chwarae’r gem draffts. Yr amser hwn cafodd y term ei bathu. Yna drwy ddatblygiadau technolegol diweddar, mae posibilrwyddau ddysgu peirianyddol bron yn ddiddiwedd. Ers cael ei sefydlu yn y 50au, cymerodd tan 1997 i ddatblygu rhaglen a all guro’r chwaraewr gwyddbwyll orau yn y byd. Nid yn unig yw dysgu peirianyddol yn cael ei ddefnyddio i greu rhaglenni gemau, mae nawr yn cael ei ddefnyddio ym mhob math o raglenni megis llawer o apiau ar eich ffôn fel “Google Maps”, “Uber” i “Netflix”.
+</p>
+<p>
+Mae sylfaeni ddysgu peirianyddol yn cael eu defnyddio yn prosesu iaith naturiol a dadansoddi sentiment.
+Mae’r proseses yma yn cael ei ddefnyddio i wneud ffwythiannau megis adnabod lleferydd, creu tecst i leferydd
+a chyfieithiad peirianyddol. Yn ogystal mae dysgu peirianyddol yn cael ei ddefnyddio i brosesu lluniau, mae’r
+defnydd yma’n cael ei weld yn aml gyda systemau adnabod wynebau.
+</p>
+<p>
+Mae dysgu peirianyddol yn cael ei ddefnyddio yn aml i ddadansoddi data pryd bynnag gennym ddata
+mawr. Mae ein llywodraeth yn defnyddio dysgu peirianyddol yn aml, mae adran actiwari y llywodraeth
+yn defnyddio dysgu peirianyddol i ddatblygu mewnwelediadau i’w problemau. Hyd yn hyn maen nhw
+wedi defnyddio dysgu peirianyddol i rannu cynlluniau pensiwn i grwpiau gyda phriodweddau tebyg ac wedi
+rhagfynegi cyflog graddedigion yn y dyfodol.
+</p>
+<p>
+Mae deallusrwydd artiffisial wedi tyfu yn esbonyddol yn ddiweddar gyda dysgu peirianyddol. Mae deallusrwydd
+artiffisial yn y newyddion drwy’r adeg oherwydd datblygiadau parhaus. Yn ddiweddar rydym wedi
+gweld moduron heb yrrwr, diagnosau meddygol, a ‘chat bots’.
+</p>
+<p>
+Categoreiddiwn algorithmau dysgu peirianyddol i ddwy brif fath - dysgu o dan orchwyliaeth, a dysgu heb
+orchwyliaeth. Maent yn wahanol yn eu pwrpas a’u dulliau.
+</p>
+<h1>Dysgu dan Oruchwyliaeth</h1>
+<p>
+Diffiniwn α i fod y set o bob label, gall y labeli fod yn arwahanol neu yn ddi-dor, yna diffiniwn β fod y
+fector o ddimensiwn D ∈ &integers;<sub>+</sub>. Gadewch i’n data fod nifer o barau o bwyntiau (x<sub>i</sub>, y<sub>i</sub>). Yn y fan hyn mae
+y<sub>i</sub> ∈ α. Fydd x<sub>i</sub> ∈ β yn fector gyda gwerthoedd ar gyfer priodoleddau gwahanol. Y nod ar gyfer dysgu dan
+oruchwyliaeth yw dysgu’r mapiad o x i y.
+</p>
+<p>
+Gwnawn hyn trwy hollti’r data i mewn i set hyfforddi a set profi, lle mae’n bwysig i dybio pob pwynt
+wedi’i samplu’n annibynnol a’i dosbarthu o ddosraniad dros α × β. Defnyddiwn y set hyfforddi i rhedeg yr
+algorithm dysgu peiranyddol a chanfod y mapiad. Defnyddiwn y set profi er mwyn gwirio’r mapiad hyn. Fel
+arfer defnyddiwn tua 70% o’r data fel y set hyfforddi, a’r 30% gweddill fel y set profi, er taw tra-baramedr
+(hyper-parameter) yr hon ac felly gellid ei ddewis.	
+</p>
+<p>
+Mae’r ffurfiau wahanol o ddysgu dan oruchwyliaeth yn cael ei rhannu i ddau faes yn ôl sut fath o ddata
+sydd gennym. Os yw’r label yn data arwahanol, mae gennym ddosbarthiad (classification). Os yw’r label
+yn data di-dor, mae gennym atchweliad (regression). Mae yna lwyth o wahanol fathau o ddosbarthiadau ag
+atchweliadau; dyma ambell o enghreifftiau ohonynt:
+</p>
+
+<table style="width:60%; margin-left: auto;margin-right: auto; font-size: 15px; font-family:  Helevetica">
+  <tr>
+    <th>Dosbarthiad</th>
+    <th>Atchweliad</th> 
+  </tr>
+  <tr>
+    <td>Coed penderfyniadau</td>
+    <td>Atchweliad logistaidd</td>
+  </tr>
+  <tr>
+    <td>Dosbarthiad naïf Bayes</td>
+    <td>Atchweliad llinol</td>
+  </tr>
+  <tr>
+    <td>K cymydog agosaf</td>
+    <td>Atchweliad Poisson</td>
+  </tr>
+</table>
+
+<h1>Dysgu heb Oruchwyliaeth</h1>
+<p>
+Diffiniwn γ i fod yn ddosraniad. Gadewch i’n data fod X = (x<sub>1</sub>, . . . , x<sub>n</sub>) sy’n dynodi n pwyntiau lle mae
+x<sub>i</sub> ∈ γ ag i ∈ {1, . . . , n}. Tybiwn fod yr enghreifftiau x<sub>i</sub> wedi’i samplu’n annibynnol a’i dosbarthu o
+ddosraniad unfath ar γ. Y nod o ddysgu heb oruchwyliaeth yw amcangyfrif dwysedd o’r dosraniad sy’n
+debygol o fod wedi creu X.
+</p>
+<p>
+Mae’r fatha boblogaidd o ddysgu heb oruchwyliaeth yn cymryd ffurf wannach o’r syniad hyn. Dyma ambell
+i enghraifft ar ffurfiau gwahanol o ddysgu heb oruchwyliaeth:
+</p>
+<p>Clystyru</p>
+<p>Lleihad dimensiwn</p>
+<p>Model Markov cudd</p>
+<h1>Dysgu atgyfnerthol</h1>
+<p>
+Mae dysgu atgyfnerthol yn dysgu drwy wrando ar adborth o’r system ei hyn. Fydd y peiriant yn dysgu
+i wneud dulliau sy’n arwain tuag at adborth da ac yna yn osgoi unrhyw dullai caiff adborth gwael. Mae
+hyn yn wahanol i ddysgu dan oruchwyliaeth gan fod does ddim gymaint o ddibyniaeth ar y ddata hyfforddi.
+Mae’n wahanol i ddysgu heb oruchwyliaeth gan ein bod angen dewis pryd i dderbyn adborth o’r system
+</p>
+<p>
+Enghraifft o ddysgu atgyfnerthol yw prosesau penderfynu Markov, mae’n cael ei ddiffinio fel proses stocastig
+dan reolaeth. Mae prosesau penderfynu Markov yn cael ei ddiffinio gan y plyg (S, A, T, p, r). Yn y plyg mae’r
+newidynnau yn cael ei ddiffinio fel: S yw’r gofod sy’n cynrychioli esblygiad y prosesau, A yw’r set o bob
+gweithred sy’n bosib, T yw’r set o amseroedd rhwng dewisiadau, p sy’n dynodi’r ffwythiant tebygolrwydd
+ar gyfer y trosglwyddo cyflwr ac r sy’n dynodi’r ffwythiant wobrwyo i’r trosglwyddo cyflwr. Mae prosesau
+penderfynu Markov yn efelychu system ac yna yn dewis gweithrediadau ar hap ac yn penderfynu ansawdd y
+dewis drwy’r ffwythiant wobrwyo. Felly fydd y system yn optimeiddio i ddewis yr opsiynau fydd yn allbwn
+y wobr orau ac felly yn dewis yr opsiwn o’r ansawdd orau.
+</p>
+
 		</div>
 	</section>
 
