@@ -8,6 +8,7 @@
 	<meta name="author" content="Alun Owen">
 	<title>Dysgu Peirianyddol | Croeso</title>
 	<link rel="stylesheet" href="../css/style.css">
+	<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 </head>
 <body>
 	<header>
@@ -27,7 +28,80 @@
 	<section id="showcase">
 		<div class="container">
 			<h1>Dosbarthiad Naïf Bayes</h1>
-			<p>testing ia asn n awelsi  ask jaj  als alm maks  mkasm kak makm  asm ka k mka  mkamf kmfmak m</p>
+			<h2>Cefndir</h2>
+<p>
+Mae dosbarthiad naïf Bayes fel arfer yn cael ei ystyried i fod y dull hawsaf o ddosbarthu sydd ogystal
+yn weddol gywir. Gall dosbarthiad naïf Bayes ei ddefnyddio ar ddata di-dor ag arwahanol. I gael creu
+dosbarthiad ar set ddata di-dor mae rhaid i ni dybio’r fath o ddata sydd gennym, fel arfer y dybiaeth hon yw
+bod yn dilyn dosraniad normal. O hyn ymlaen fyddwn yn tybio fod y data sydd gennym yn arwahanol.
+</p>
+<p>
+Ystyriwch fod gennych set ddata yn cynnwys gwybodaeth am y tywydd am y penwythnosau blaenorol ac
+p’un ai fod rhyw berson wedi chwarae golff y penwythnos yna. Yn defnyddio’r wybodaeth yma gallwn cyfrifo
+tebygolrwydd o fynd i chwarae golff rhyw benwythnos i ddod gan ddefnyddio gwybodaeth am y tywydd y
+benwythnos yna. Enghraifft arall fwy defnyddiol yw categoreiddio dogfenni ar gyfer pwnc, yn syml fydd hyn
+yn cael ei wneud drwy edrych ar amledd geiriau.
+</p>
+<h2>Yr Algorithm</h2>
+<p>
+Mae’r dull yma wedi cael ei adeiladu ar sylfaen o reol Bayes sy’n ymwneud gyda thebygolrwydd amodol ag
+tebygolrwydd ymylol. Mae Hafaliad isod yn dangos rheol Bayes, lle mae P(A) ydy rhagdebygolrwydd
+o A, P(A|B) yw’r ôl debygolrwydd o A, ag P(B|A) yw’r tebygolrwydd amodol o B rhoddir A. P(B) yw
+tebygolrwydd ymylol o B.
+</p>
+$$ P(A|B) = \frac{P(A)P(B|A)}{P(B)} $$
+<p>
+Mae’r algorithm yn defnyddio rheol Bayes ag yn ei estyn gan dybio fod pob pâr o briodoleddau yn dilyn
+annibyniaeth amodol. Er mwyn gweld hyn wnawn ddiffinio ein newidynnau.
+</p>
+<p>
+Gadwn i y cynrychioli’r labeli o ddosbarthiadau, hefyd wnawn ddiffinio x<sub>i</sub> i fod y priodoledd dibynnol lle
+mae i ∈ {1, . . . , n} yn cynrychioli n priodoleddau gwahanol.
+</p>
+<p>
+Felly mae rheol Bayes yn edrych fel:
+</p>
+$$ P(y|x_{1}, \dots, x_{n}) = \frac{P(y)P(x_{1}, \dots, x_{n}|y)}{P(x_{1}, \dots, x_{n})} $$
+<p>
+Yn defnyddio rhagdybiaeth naïf ar annibyniaeth amodol:
+</p>
+$$ P(x_{i}|y, x_{1}, \dots, x_{i-1}, x_{i+1}, \dots, x_{n}) = P(x_{i}|y) $$
+<p>
+Gallwn drawsnewid rheol Bayes i reol lawer iawn symlach i’w cyfrifo.
+</p>
+$$ P(y|x_{1}, \dots, x_{n}) = \frac{P(y)\Pi^{n}_{i=1} P(x_{i}|y)}{P(x_{1}, \dots, x_{n})} $$
+<p>
+Fyddwn yn defnyddio y fformiwla yma i cyfrifo yr ôl tebygolrwydd ar gyfer pob gwerth o y sydd gennym
+ar gael. Felly oherwydd dim ond y fydd yn newid gennym, gallwn sylwi fod yr enwadur am fod yn hafal
+i bob cyfrifiad, felly i gymharu yr ôl tebygolrwydd i bob gwerth gallwn ei anwybyddu. Felly i cymharu
+tebygolrwydd am wahanol labeli fyddwn yn cymharu drwy edrych ar y rhifiadur yn unig.
+</p>
+<p>
+Mae sut rydym yn cyfrifo P(xi|y) yn dibynnu yn hollol ar y priodoledd, gan ein bod am edrych ar set ddata
+sy’n gategoreiddiol yn y tiwtorialau fyddwn yn edrych ar ffurf dosbarthiad naïf Bayes gategoreiddiol yn
+benodol. Felly i ddata wedi’i chategoreiddio, ar gyfer categori k ag dosbarth h:
+</p>
+$$ P(x_{i} = k|y = h) = \frac{N_{k,h}}{N_{h}} $$
+<p>
+Lle mae N yn dynodi’r nifer o samplau. Gan fod y rhif yma o fewn lluoswm ac mae’n bosib cael tebygolrwydd
+o 0, fyddem yn defnyddio ffurf llyfnhau Laplace i addasu ein niferoedd i fod yn fwy tebygol i ddosbarthiad
+unffurf. Mi wnawn wneud hyn gan gyflwyno newidyn newydd θ a dynodwyd n<sub>i</sub> y nifer o categoreiddiau
+gwahanol o fewn priodoledd i. Yna:
+</p>
+$$ P(x_{i} = k|y = h; \theta) = \frac{N_{k,h} + \theta}{N_{h} + \theta n_{i}} $$
+<p>
+Y fwyaf mae’r gwerth o θ, y fwyaf agos i’r dosraniad unffurf fydd y niferoedd yn mynd. Mae’r tebygolrwydd
+ymylol P(y) yn ddigon hawdd i’w cyfrifo:
+</p>
+$$ P(y) = \frac{N_{h}}{N} $$
+<p>
+Felly i gloi, gallwn ysgrifennu fformiwla dosbarthiad naïf Bayes categoreiddiol fel
+</p>
+$$ P(y|x_{1}, \dots, x_{n}; \theta) = \frac{N_{h}}{N P(x_{1}, \dots, x_{n})} \prod^{n}_{i=1} \frac{N_{k,h} + \theta}{N_{h} + \theta n_{i}}  $$
+<p>
+ac felly:
+</p>
+$$P(y|x_{1}, \dots, x_{n}; \theta) \propto \frac{N_{h}}{N} \prod^{n}_{i=1} \frac{N_{k,h} + \theta}{N_{h} + \theta n_{i}}$$ 
 		</div>
 	</section>
 

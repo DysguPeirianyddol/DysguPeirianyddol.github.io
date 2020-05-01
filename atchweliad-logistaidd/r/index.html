@@ -8,6 +8,7 @@
 	<meta name="author" content="Alun Owen">
 	<title>Dysgu Peirianyddol | Croeso</title>
 	<link rel="stylesheet" href="../../css/style.css">
+	<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 </head>
 <body>
 	<header>
@@ -28,7 +29,150 @@
 		<div class="container">
 			<h1>Atchweliad Logistaidd</h1>
 			<h2>Tiwtorial yn R</h2>
-			<p>testing ia asn n awelsi  ask jaj  als alm maks  mkasm kak makm  asm ka k mka  mkamf kmfmak m</p>
+<p>
+Yn yr enghraifft hon, fyddwn yn edrych ar ddata ar 1000 o bobol, fydd y data yn cynnwys gwybodaeth ar
+taldra, pwysau, maint gwasg, oed, rhyw ag oes gan y person clefyd y siwgr. Mae’n bosib lawrlwytho’r data
+oddi: <a href="https://dysgupeirianyddol.github.io/lawrlwythiadau/">https://dysgupeirianyddol.github.io/lawrlwythiadau/</a>
+</p>
+<p>
+Ar gyfer gwneud atchweliad logistaidd, mae angen y pecyn stats a wnawn ei lawrlwytho a’i gosod gan redeg
+y canlynol:
+</p>
+<div class="codes">
+<code>
+> install.packages("stats") <br>
+> library(stats)
+</code>
+</div>
+<p>
+Yna fydd rhaid lwytho’r data i mewn a’i arbed fel newidyn. Fydd rhaid neud yn siŵr fod y ffwythiant
+read.csv yn cael ei chyfeirio tuag at y lleoliad cywir o le mae eich data chi wedi’i gadw.
+</p>
+<div class="codes">
+<code>
+> data <- read.csv("data_logistic.csv")
+</code>
+</div>
+<p>
+Unwaith ei fod wedi llwytho, mae’n bosib gweld y data:
+</p>
+<div class="codes">
+<code>
+> View(data)
+</code>
+</div>
+<img src="../../img/data_diabetes_python.jpg">
+<p>
+Nawr wnawn rannu’r data fel bod 70% o’r data yw’r data hyfforddi ac 30% o’r data yw’r data profi. Fyddwn
+yn rhannu’r data ar hap.
+</p>
+<div class="codes">
+<code>
+> rhifau <- c(1:1000) <br>
+> rhifauhyfforddi <- sample(x = rhifau, size = 700, replace = FALSE) <br>
+> rhifauprofi <- setdiff(rhifau, rhifauhyfforddi)
+</code>
+</div>
+<p>
+Mae’r côd uchod yn rhannu’r setiau gan ddefnyddio eu indecs (rhif y rhes) yn y data ac yno mae’r côd isod
+yn rhannu’r fectorau i mewn i setiau arwahan.
+</p>
+<div class="codes">
+<code>
+> hyfforddi <- data[rhifauhyfforddi,] <br>
+> profi <- data[rhifauprofi,]
+</code>
+</div>
+<p>
+Nawr rydym yn barod i greu’r model logistaidd. I greu’r model fyddem yn rhedeg y côd gan ddefnyddio
+y ffwythiant glm, sydd yn fyr am ”Generalized Linear Models”, sydd yn golygu gall y ffwythiant cael
+ei ddefnyddio am lawer fwy o atchweliadau na logistaidd yn unig. Oherwydd hyn mae angen gosod yr
+opsiwn family i binomial. I ddilyn strwythur o’r algorithm, byddwn yn creu’r model o’r data hyfforddi yn
+unig.
+</p>
+<div class="codes">
+<code>
+> atchweliad <- glm(Clefyd_Siwgr ~ Taldra + Pwysau + Oed + Rhyw + MaintGwasg, family = binomial, data = hyfforddi)
+</code>
+</div>
+<p>
+Unwaith mae’r model wedi’i greu, gallwn weld eu paramedrau sydd wedi cael ei amcangyfrif:
+</p>
+<div class="codes">
+<code>
+> atchweliad$coefficients <br>
+&nbsp;(Intercept)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Taldra&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pwysau&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Oed <br>
+22.858432583 -0.254347133 0.215272873 0.057360113 <br>
+&nbsp;&nbsp;&nbsp;RhywGwryw&nbsp;&nbsp;&nbsp;MaintGwasg <br>
+-8.074052403 -0.003206262
+</code>
+</div>
+<p>
+Felly mae’r model sydd gennym, i dri lle degl, yn edrych fel:
+</p>
+$$ P(\mathbf{x}) = \frac{1}{1 + e^{-22.858 + 0.254 x_{\text{Taldra}} - 0.215 x_{\text{Pwysau}} - 0.057 x_{\text{Oed}} + 8.074 x_{\text{Rhyw}} + 0.003 x_{\text{MaintGwasg}}}} $$
+<p>
+Gan fod ein model wedi’i chwblhau, gallwn weld sut mae’n perfformio yn penderfynu os oes gan bobl y set
+profi clefyd siwgr neu peidio. Geith hyn ei wneud yn defnyddio’r ffwythiant predict a dewis yr opsiwn type
+fel response i gael allbwn o debygolrwydd.
+</p>
+<div class="codes">
+<code>
+> canlyniad <- predict(object = atchweliad, newdata = profi, type = "response") <br>
+> canlyniad <- round(canlyniad, digits = 0) <br>
+> canlyniad <- unname(canlyniad)
+</code>
+</div>
+<p>
+Fyddem yn ogystal yn talgrynnu’r tebygolrwydd o bob person i cael dewis ar os gennym clefyd siwgr neu
+peidio. Wedyn fyddem yn tynnu i ffwrdd y rhifau o’r rhesi ar y fector o labeli. Nawr gennym y rhagfynegiad
+a’r canlyniadau gwreiddiol, gallwn gyfrifo’r canran o’r ddau set sy’n debyg. Gallwn gyfrifo yn y ffurf ganlynol
+gan fod ein setiau yn ddeuaidd:
+</p>
+<div class="codes">
+<code>
+> 1-(sum((test[,6]-unname(canlyniad))**2)/length(test[,6]))
+0.8833333
+</code>
+</div>
+<p>
+Fel y gwelwn, mae ein model gyda cywirdeb o 88% ar gyfer y data sydd gennym. Gallwn ni defnyddio y
+model rydym wedi creu i benderfynu ar os gan berson newydd ar hap clefyd siwgr neu ddim. Gwelwn hyn
+gan gyflwyno dyn gydag Taldra o 160, pwysau 92, maint gwasg o 34 ag ugain oed yn y côd isod:
+</p>
+<div class="codes">
+<code>
+> unname(round(predict(object = atchweliad, <br>
++ newdata = data.frame(Taldra = 160, <br>
++ Pwysau = 92, <br>
++ MaintGwasg = 34, <br>
++ Oed = 20, <br>
++ Rhyw = "Gwryw"), <br>
++ type = "response"), <br>
++ digits = 0)) <br>
+0
+</code>
+</div>
+<p>
+Am y person yma gwelwn fod y model wedi rhagfynegu nad oes ganddo clefyd siwgr. Os wnawn ystyried
+person gyda’r un nodweddion ond yn fenyw:
+</p>
+<div class="codes">
+<code>
+> unname(round(predict(object = atchweliad, <br>
++ newdata = data.frame(Taldra = 160, <br>
++ Pwysau = 92, <br>
++ MaintGwasg = 34, <br>
++ Oed = 20, <br>
++ Rhyw = "Benyw"), <br>
++ type = "response"), <br>
++ digits = 0)) <br>
+1
+</code>
+</div>
+<p>
+Gwelwn fod y model yn rhagfynegi ei fod hi gyda clefyd siwgr.
+</p>
 		</div>
 	</section>
 

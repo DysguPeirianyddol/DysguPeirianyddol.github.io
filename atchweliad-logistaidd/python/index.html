@@ -8,6 +8,7 @@
 	<meta name="author" content="Alun Owen">
 	<title>Dysgu Peirianyddol | Croeso</title>
 	<link rel="stylesheet" href="../../css/style.css">
+	<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 </head>
 <body>
 	<header>
@@ -28,7 +29,123 @@
 		<div class="container">
 			<h1>Atchweliad Logistaidd</h1>
 			<h2>Tiwtorial yn Python</h2>
-			<p>testing ia asn n awelsi  ask jaj  als alm maks  mkasm kak makm  asm ka k mka  mkamf kmfmak m</p>
+<p>Ar gyfer cynhyrchu atchweliad logistaidd yn python mae rhaid i ni ddefnyddio’r pecynnau sklearn, a pandas
+i trin y data. Wnawn lwytho’r pecynnau gan redeg y côd yma:</p>
+<div class="codes">
+<code>
+>>> from sklearn.linear_model import LogisticRegression <br>
+>>> import pandas as pd
+</code>
+</div>
+<p>
+Nawr mae angen llwytho’r data, wnawn ddefnyddio data sy’n cynnwys 1000 o gofnodion data ar fesuriadau
+pobl yn cynnwys taldra, pwysau, maint gwasg, oed, rhyw ag oes gan y person clefyd y siwgr. Cewch ei
+lawrlwytho o <a href="https://dysgupeirianyddol.github.io/lawrlwythiadau/">https://dysgupeirianyddol.github.io/lawrlwythiadau/</a>.
+</p>
+<div class="codes">
+>>> data = pd.read_csv('data_logistic.csv')	
+</div>
+<p>
+Gallwn gweld yr data gan rhedeg:
+</p>
+<div class="codes">
+<code>
+>>> data.head()
+</code>
+</div>
+<img src="../../img/data_diabetes_python.jpg">
+<p>
+Gan fod ein data gyda rhyw wedi cael ei diffinio gyda’r geiriau “Gwryw” a “Benyw”, mae Python yn cael
+trafferth yn delio gyda nhw. Felly nawn trawsnewid nhw i newidyn deuaidd (set o 1 a 0).
+</p>
+<div class="codes">
+<code>
+>>> data['Rhyw'] = data['Rhyw'].apply(lambda x: int(x =='Gwryw'))
+</code>
+</div>
+<p>
+Nawr fydd rhaid i ni rannu’r data i ddata hyfforddi ag data profi.
+</p>
+<div class="codes">
+<code>
+>>> hyfforddi = data.sample(frac = 0.7) <br>
+>>> profi = data.drop(hyfforddi.index)
+</code>
+</div>
+<p>
+Mae’r wybodaeth rydym angen i greu model logistaidd angen fod yn fatrics yn Python, felly:
+</p>
+<div class="codes">
+>>> X = hyfforddi[['Taldra', 'Pwysau', 'MaintGwasg', 'Oed', 'Rhyw']].as_matrix()
+>>> y = hyfforddi['Clefyd_Siwgr'].as_matrix()
+>>> X_profi = profi[['Taldra', 'Pwysau', 'MaintGwasg', 'Oed', 'Rhyw']].as_matrix()
+>>> y_profi = profi['Clefyd_Siwgr'].as_matrix()
+</div>
+<p>
+I redeg yr atchweliad logistaidd wnawn ddefnyddio’r ffwythiant yn sklearn. Wnawn wneud gan redeg y côd
+canlynol:
+</p>
+<div class="codes">
+<code>
+>>> clf = LogisticRegression(random_state=0).fit(X, y)
+</code>	
+</div>
+<p>
+Gallwn edrych ar y rhyngdoriad gan
+</p>
+<div class="codes">
+<code>
+>>> clf.intercept_ <br>
+array([ 1.70933553])
+</code>
+</div>
+<p>
+ac yna y paramedrau eraill:
+</p>
+<div class="codes">
+<code>
+>>> clf.coef_ <br>
+array([[-0.12384414, 0.14710498, 0.12995053, 0.04682347, -4.80795833]])
+</code>	
+</div>
+<p>
+Felly dyma yw ein model i dri lle degol:
+</p>
+$$ P(\mathbf{x}) = \frac{1}{1 + e^{-1.709 + 0.124 x_{\text{Taldra}} + 0.147 x_{\text{Pwysau}} - 0.047 x_{\text{Oed}} + 4.808 x_{\text{Rhyw}} - 0.130 x_{\text{MaintGwasg}}}} $$
+<p>
+Nawr gallwn ni cyfrifo’r gyfradd llwyddiant o ein model ar y data profi. Gallwn ei chyfrifo yn y ffordd
+ganlynol oherwydd ein bod yn delio gyda data deuaidd.
+</p>
+<div class="codes">
+<code>
+>>> 1-(sum((clf.predict(X_profi)-y_profi)**2)/len(y_profi)) <br>
+0.91666666666666663
+</code>
+</div>
+<p>
+Felly mae ein model logistaidd yn python yn rhoi cyfradd llwyddiant o tua 92%. Gallwn nawr ei ddefnyddio
+ar gyfer rhyw berson tu allan i ein data. Os oes gennym wryw gyda thaldra o 171, pwysau o 130 a maint
+gwasg ag oed o 40; gallwn ragfynegi os oes gan y person clefyd siwgr ta ddim.
+</p>
+<div class="codes">
+<code>
+>>> clf.predict([[171, 130, 40, 40, 1]]) <br>
+array([1], dtype=int64)
+</code>
+</div>
+<p>
+Gwelwn fod y model logistaidd yn rhagfynegu bod gan y person hwn clefyd siwgr. Nawr nawn drio gyda
+person tebyg ond gyda phwysau o 90 yn lle.
+</p>
+<div class="codes">
+<code>
+>>> clf.predict([[171, 90, 40, 40,1]]) <br>
+array([0], dtype=int64)
+</code>	
+</div>
+<p>
+Gwelwn nad oes gan y person yma clefyd siwgr.
+</p>
 		</div>
 	</section>
 

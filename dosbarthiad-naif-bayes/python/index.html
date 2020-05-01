@@ -28,7 +28,117 @@
 		<div class="container">
 			<h1>Dosbarthiad Naïf Bayes</h1>
 			<h2>Tiwtorial yn Python</h2>
-			<p>testing ia asn n awelsi  ask jaj  als alm maks  mkasm kak makm  asm ka k mka  mkamf kmfmak m</p>
+<p>
+Yn y tiwtorial hwn fyddwn yn defnyddio set ddata o ryw etholiad sydd yn cynnwys y priodoleddau o 200
+berson, y priodoleddau yw gwlad breswyl, rhyw, os yw’n hapus gyda’r blaid yn bwêr, math o dŷ sydd gennym
+ac os oes gennym fwy nag un tŷ. Mae’r set ddata ar gael ar y wefan <a href="https://dysgupeirianyddol.github.
+io/lawrlwythiadau/">https://dysgupeirianyddol.github.io/lawrlwythiadau/</a>. I gychwyn dosbarthiad naïf Bayes yn Python mae rhaid llwytho’r pecyn pandas.
+Llwythwn y pecyn fel:
+</p>
+<div class="codes">
+<code>
+>>> import pandas as pd
+</code>	
+</div>
+
+<p>
+Yna wnawn lwytho’r data. Yna fedrem weld y data gan ddefnyddio data.head().
+</p>
+
+<div class="codes">
+<code>
+>>> data = pd.read_csv('etholiad.csv') <br>
+>>> data.head()
+</code>	
+</div>
+
+<p>
+Gwelwn fod pob priodoledd yn ddata wedi’i chategoreiddio sydd yn gadael ni ddefnyddio
+</p>
+<img src="../../img/data_dosbarthiad_python.jpg">
+<p>
+Byddwn yn creu ddau ffwythiant, un i’r ddau debygolrwydd sy’n cael ei chynnwys yn y rhifiadur o’r fformiwla
+naïf Bayes. Mae’r ffwythiant cyntaf yn edrych ar y tebygolrwydd amodol, fydd y ffwythiant yn cymryd mewnbwn o blaid, colofn, gwerth y plyg ag y data defnyddiwn. Mae’r ffwythiant hefyd yn defnyddio cyfrifffug
+i wneud yn siŵr fydd yna ddim tebygolrwydd o faint 0 yn cael ei lluosi yn y lluoswm nes ymlaen.
+</p>
+
+<div class="codes">
+<code>
+>>> def tebygolrwydd_amodol(plaid, colofn, gwerth, data): <br>
+... &nbsp;&nbsp;&nbsp;&nbsp;rhifiadur = len(data[(data["Plaid.Wleidyddol"]==plaid)&(data[colofn]==gwerth)]) + 1 <br>
+... &nbsp;&nbsp;&nbsp;&nbsp;enwadur = len(data[data["Plaid.Wleidyddol"]==plaid])+len(data[colofn].unique()) <br>
+... &nbsp;&nbsp;&nbsp;&nbsp;return rhifiadur/enwadur
+</code>	
+</div>
+<p>
+Ag isod mae gennym y ffwythiant ar gyfer cyfrifo’r tebygolrwydd o ryw blaid.
+</p>
+<div class="codes">
+<code>
+>>> def tebygolrwydd(plaid, data): <br>
+... &nbsp;&nbsp;&nbsp;&nbsp;return len(data[data["Plaid.Wleidyddol"]==plaid]) / len(data)
+</code>	
+</div>
+<p>
+Yna i greu rhif pendant ar gyfer y rhifiadur o’r tebygolrwydd o bob plaid ac i ddewis yr uchafswm.
+</p>
+
+<div class="codes">
+<code>
+>>> def rhagfynegi(data, plyg):<br>
+... &nbsp;&nbsp;&nbsp;&nbsp;colofnau = data.columns[:-1] <br>
+... &nbsp;&nbsp;&nbsp;&nbsp;pleidiau = data['Plaid.Wleidyddol'].unique() <br>
+... &nbsp;&nbsp;&nbsp;&nbsp;tebygolrwyddau = {p: 1 for p in pleidiau} <br>
+... &nbsp;&nbsp;&nbsp;&nbsp;for plaid in pleidiau: <br>
+... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for i, colofn in enumerate(colofnau): <br>
+... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gwerth = plyg[i] <br>
+... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tebygolrwyddau[plaid] *= tebygolrwydd_amodol(plaid, colofn, gwerth, data) <br>
+... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tebygolrwyddau[plaid] *= tebygolrwydd(plaid, data) <br>
+... &nbsp;&nbsp;&nbsp;&nbsp;return max(tebygolrwyddau.keys(), key=lambda x: tebygolrwyddau[x])
+</code>	
+</div>
+
+<p>
+Dyma’r plyg fyddem yn defnyddio i drio rhagfynegi ei blaid drwy ddosbarthu.
+</p>
+
+<div class="codes">
+<code>
+>>> plyg = ["Lloegr", "Benyw", "Na", "Ty Rhes", "Na"]
+</code>	
+</div>
+
+<p>
+Gawn ni allbwn o blaid lafur o redeg y ffwythiant rhagfynegi ar ein plyg.
+</p>
+
+<div class="codes">
+<code>
+>>> rhagfynegi(data, plyg) <br>
+'Plaid Lafur'
+</code>	
+</div>
+
+<p>
+Nawr wnawn drio plyg wahanol i’r algorithm drio rhagfynegi ei blaid.
+</p>
+
+<div class="codes">
+<code>
+>>> plyg = ["Lloegr", "Gwryw", "Yndw", "Ty Rhes", "Yndw"]
+</code>	
+</div>
+
+<div class="codes">
+<code>
+>>> rhagfynegi(data, plyg) <br>
+'Plaid Geidwadol'
+</code>	
+</div>
+
+<p>
+Gwelwn drwy ddefnyddio’r algorithm ar blyg gwahanol cafodd ei ddosbarthu i Blaid Geidwadol.
+</p>
 		</div>
 	</section>
 

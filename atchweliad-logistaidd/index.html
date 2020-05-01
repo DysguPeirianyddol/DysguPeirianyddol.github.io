@@ -8,6 +8,7 @@
 	<meta name="author" content="Alun Owen">
 	<title>Dysgu Peirianyddol | Croeso</title>
 	<link rel="stylesheet" href="../css/style.css">
+	<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 </head>
 <body>
 	<header>
@@ -27,7 +28,143 @@
 	<section id="showcase">
 		<div class="container">
 			<h1>Atchweliad Logistaidd</h1>
-			<p>testing ia asn n awelsi  ask jaj  als alm maks  mkasm kak makm  asm ka k mka  mkamf kmfmak m</p>
+			<h2>Cefndir</h2>
+<p>
+Defnyddiwn atchweliad logistaidd i fodelu’r tebygolrwydd o ddosbarthu gwrthrych i mewn i setiau deuaidd.
+Mae’n ddull o ddysgu dan oruchwyliaeth sy’n cael ei ddefnyddio yn aml yn academïau a diwydiannau. Gall
+y atchweliad cael ei ddefnyddio i weld os mae rhywun yn curo/colli, sâl/iachus neu basio/methu mewn rhyw
+sefyllfa benodol. Gall y syniad yma cael ei ymestyn, gall wahanol atchweliadau logistaidd cael ei rhoi yn
+baralel i geisio rhoi’r tebygolrwydd o liw llygaid rhyw berson er enghraifft. Mewn termau mwy cyffredinol,
+gall ymestyn atchweliadau logistaidd i weithio ar setiau o labeli di-deuaidd. O hyn ymlaen fyddem yn edrych
+ar atchweliadau gyda labeli deuaidd.
+</p>
+<p>
+Mae’n hawdd delweddu sut fydd atchweliad logistaidd gydag un newidyn annibynnol. Gwelwn fod y model
+yn edrych fel y graff yn Ddarlun 3.1 pan hyn yw’r sefyllfa.
+</p>
+<figure>
+	<img src="../img/Atchweliad_logistaidd.jpeg">
+	<figcaption>
+		Darlun 3.1
+	</figcaption>
+</figure>
+<p>
+Gwelwn yn y graff nesaf fod y plot yn dangos ein data mewn ffordd rhesymol os wnawn gymharu i y cyfrannau
+o’r pwyntiau yn pob un o’r adrannau. Gwelwn y cyfrannau o phob adran yn glas yn Ffigwr 3.2.
+</p>
+<figure>
+	<img src="../img/atchweliad_logistaidd_gyda_pwyntiau.jpeg">
+	<figcaption>
+		Ffigwr 3.2
+	</figcaption>
+</figure>
+<p>
+Os wnawn cymharu y model logistaidd i model llinol, gwelwn yn y plot yn Darlun 3.1 dydy’r model ddim yn
+cynnal cynhaliad ar gyfer mewnbwn llai na 60 a fwy na 120 gan fod y tebygolrwydd yn anniffiniedig (Hynny
+yw, dydi ddim yn bosib cael P(x)<0 a P(x)>1).
+</p>
+<figure>
+	<img src="../img/cymharu_llinol.jpeg">
+</figure>
+<h2>Sut mae atchweliad logistaidd yn gweithio?</h2>
+<p>
+Wnawn ddiffinio’r fector sy’n cynnwys gwybodaeth am berson j (j ∈ 1, . . . , n) gyda xj sydd hefo dimensiwn
+o m (hynny yw bod yna m priodoleddau). Yn ogystal, wnawn ddiffinio yj fel label deuaidd i berson j, yr hyn
+rydyn ni eisiau rhagfynegi. Yna gydag ein data, gan ein bod yn perfformio dysgu dan oruchwyliaeth fyddwn
+yn hyfforddi’r algorithm yn defnyddio’r data hyfforddi ac yno yn gwirio’r algorithm drwy’r data profi. Felly
+wnawn hollti’r data fel:
+</p>
+<p>
+Data hyfforddi: x<sub>j</sub> a y<sub>j</sub> ar gyfer j ∈ {1, . . . , k} lle mae k < n
+</p>
+<p>
+Data profi: x<sub>j</sub> a y<sub>j</sub> ar gyfer j ∈ {k + 1, . . . , n}
+</p>
+<p>
+Mae’r model logistaidd yn cymryd y gwrthdro o ffurf logit, mae hyn yn cael ei ddangos mewn hafaliad i'w ddod lle
+mae z ∈ (−∞,∞).
+</p>
+$$f(z) = \frac{1}{1+e^{-z}}$$
+<p>lle:</p>
+$$ z = \alpha + \beta_{1}X_{1} + \dots + \beta_{m}X_{m}$$
+<p>
+Felly mae'r hafaliad nesaf yn dangos y model cyfan.
+</p>
+$$ P(\mathbf{x}) = P(y = 1 | x_1 \dots x_k) = \frac{1}{1+e^{-( \alpha + \sum_{i=1}^{m} \beta_{i}x_{i})}} $$
+<h2>Yr Algorithm</h2>
+<p>
+Fydd α a β y paramedrau fyddem yn trio amcangyfrif o wybod x ac y y data hyfforddi. I amcangyfrif hyn
+wnawn ddefnyddio’r dull amcangyfrif tebygoliaeth fwyaf. Cymerwn ẑ i fod y fector o baramedrau fyddem
+yn amcangyfrif. Yna mae gennym y amcangyfrif tebygoliaeth ganlynol a fyddem yn trio cael y gwerth agosaf
+i 1.
+</p>
+$$L(\hat{\mathbf{z}}) = \prod_{s \in y_{i}=1} p(x_i) \prod_{s \in y_{i}=0} (1 - p(x_i))$$
+<p>
+Mae'r hafaliad uchod yn trio uchafsymio y lluoswm o phob tebygolrwydd ag oedd yn edrych ar labeli y data
+hyfforddi. Gan fod rhai labeli am fod yn 0 a lleill gyda 1 ac rydym yn cymryd y lluoswm o’r rhifau gyda
+label o 0 ag 1, fydd y ddau luoswm ar wahân yn cydgyfeirio am ddau werth gwahanol. Felly rydym yn dewis
+newid y lluoswm gyda labeli 0 i gydgyfeirio tuag at 1 drwy luosi’r lluoswm 1 − p(xi) i bob un gyda label 0.
+Mae’n neud synnwyr cydgyfeirio i 1 dros 0 gan fod i gydgyfeirio tuag 0 does dim ond angen un gwerth o 0
+yn y lluoswm.
+</p>
+<p>
+Sydd yn gallu cael ei symleiddio i:
+</p>
+$$ L(\hat{\mathbf{z}}) = \prod_{i=1}^{k} p(x_i)^{y_i} (1 - p(x_i))^{1-y_i} $$
+<p>
+Nawr fyddem yn cymryd y log o’r amcangyfrif tebygoliaeth.
+</p>
+$$ \log L(\hat{\mathbf{z}}) = \sum_{i=1}^{n} y_{i} \log(p(x_{i})) + (1-y_{i}) \log(1-p(x_{i})) $$
+<p>
+Sydd yn symleiddio i:
+</p>
+$$ \log L(\hat{\mathbf{z}}) = \sum_{i=1}^{n} y_{i} \log \left(\frac{1}{1 + e^{-\hat{\mathbf{z}}\mathbf{x}}} \right) + (1 - y_i) \log \left(\frac{e^{-\hat{\mathbf{z}}\mathbf{x}}}{1 + e^{-\hat{\mathbf{z}}\mathbf{x}}} \right) $$
+<p>
+ac felly:
+</p>
+$$ \log L(\hat{\mathbf{z}}) = \sum_{i=1}^{n} y_i \hat{\mathbf{z}} x_i - \log(1 + e^{\hat{\mathbf{z}} x_i}) $$
+<p>
+Yna mae gennym y log o’r amcangyfrif tebygoliaeth. Rydym eisiau darganfod y gwerth o z lle mae’r log o’r
+amcangyfrif tebygoliaeth ar ei fwyaf.
+</p>
+$$ \hat{\mathbf{z}} = \arg \max_{\mathbf{z}} \log L(\mathbf{z})  $$
+<p>
+Does yna ddim ffordd bendant o ddatrys yr hafaliad uchod, fydd angen defnyddio algorithmau fel swm lleiaf
+sgwariau wedi eu hail-bwyso drwy iteriadau neu algorithm cof-cyfengedig Broyden–Fletcher–Goldfarb–
+Shanno (BFGS) fel gwelwn yn y algorithmau yn R ac Python yn y drefn honno. Mae dull disgyniad
+fwyaf yn algorithm poblogaidd arall.
+</p>
+<p>
+Mae’r dull disgyniad fwyaf yn algorithm optimeiddiaeth trefn cyntaf i darganfod isafbwynt lleol o ffwythiant
+gall ei ddifferu. Mae’r algorithm yn cymryd camau yn gyfraneddol i’r graddiant yn y pwynt yno. Fydd yr
+algorithm am phob cam yn edrych yn debyg i'r hafaliad isod gyda a yn rhyw bwynt a f yn y ffwythiant.
+</p>
+$$ a_{n+1} = a_{n} - \nabla f $$
+<p>Mae algorithm BFGS yn cychwyn gydag amcangyfrif cychwynnol o’r gwerth optimaidd x0, ac yno yn iteru
+drwy ddefnyddio elfennau o matrics gwrthdro Hessian sef yr ail ddeilliad o’r ffwythiant. Mae’r Hessian yn
+cynnwys gwybodaeth bwysig am y crymedd.
+</p>
+<p>
+Ar gyfer y swm lleiaf o sgwariau wedi eu hail-bwyso drwy iteriadau, mae’r algorithm yn cydgyfeirio tuag at y
+pwysau optimaidd ar gyfer y cyfernodau. Mae angen ail bwyso oherwydd mae’r amrywiant yn
+newid gydag x. Mae lle mae’r amrywiant ar ei fwyaf yn y model am dynodi lle fydd gromlin ein model.
+</p>
+<h2>Profi’r model</h2>
+<p>
+Unwaith mae gennym amcangyfrif o’r paramedrau, mae angen darganfod pa mor dda yw ein model logistaidd.
+I wneud hwn byddwn yn rhoi ein data profi x<sub>j</sub> i mewn i’r model, a cynharu’r allbwn gyda y<sub>j</sub> . Fel allbwn cawn
+tebygolrywdd, rhif rhwng 0 ac 1, yna wnawn talgrynnu’r allbwn i cael label. Hynny yw os gawn ni allbwn
+llai na hanner, rhoddwn label 0, fel arall bydd yn derbyn label 1. Wedyn mae gennym ein rhagfynegiad am
+label pob person, yna gallwn ddarganfod cyfradd llwyddiant ein model gan:
+</p>
+$$  1 - \sum_{j = k+1}^{n} \frac{(P(\mathbf{x}_j) - y_j)^{2}}{n - k} $$
+<p>
+Mae’r swm yma yn cymryd y canran o camgymeriadau rhwng y data hyfforddi a’r data profi ac yna yn ei
+tynnu i ffwrdd o 1, byddwn yn menegi hwn fel y cyfradd llwyddiant. I darganfod y canran o camgymeriadau fyddwn yn tynnu y labeli y data profi oddi wrth labeli y data hyfforddi, ac yno yn sgwario yr fector canlyniadol. Fydd y gweithrediadau yma yn gweithio yn ôl elfen. Unwaith fydd y fector wedi’i sgwario fydd
+pob elfen sy’n dangos 1 yn dangos camgymeriad ac felly fydd 0 yn dangos rhagfynegiad cywir. Yna fydd y
+fector yn cael ei symio ac fydd y cyfanswm yn cael ei rhannu gan y nifer o elfennau.
+</p>
+
 		</div>
 	</section>
 

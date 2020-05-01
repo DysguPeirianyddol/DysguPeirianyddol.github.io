@@ -28,7 +28,120 @@
 		<div class="container">
 			<h1>Dosbarthiad Naïf Bayes</h1>
 			<h2>Tiwtorial yn R</h2>
-			<p>testing ia asn n awelsi  ask jaj  als alm maks  mkasm kak makm  asm ka k mka  mkamf kmfmak m</p>
+<p>
+Ar gyfer y tiwtorial yma fydd rhaid i chi lawrlwytho’r set ddata o <a href="https://dysgupeirianyddol.github.io/lawrlwythiadau/">https://dysgupeirianyddol.github.io/lawrlwythiadau/</a>. Mae’r set ddata rydym yn edrych ar yn cynnwys gwybodaeth am 200 person a wnaeth
+pleidleisio mewn etholiad. Mae’r data yn cynnwys y blaid wleidyddol a wnaeth phob un pleidleisio am ag y
+priodoleddau canlynol: gwlad, rhyw, os yw’n hapus gyda’r blaid yn bwêr, math o dŷ ag os yw’n berchen ar
+fwy nag un tŷ.
+</p>
+<p>
+Unwaith fod y set ddata wedi lawrlwytho, wnawn lwytho’r data i mewn a’i arbed fel newidyn. Dewisom
+etholiad fel newidyn.
+</p>
+<div class="codes">
+<code>
+> etholiad <- read.csv("etholiad.csv")
+</code>
+</div>
+<p>
+Nawr gallwn weld y data gan redeg y canlynol:
+</p>
+<div class="codes">
+<code>
+> View(etholiad)
+</code>
+</div>
+<img src="../../img/data_dosbarthiad.jpg">
+<p>
+Mae’r ffwythiant canlynol yn R yn cyfrifo’r tebygolrwydd amodol pryd rydym yn gwybod y blaid, gall
+y ffwythiant cael ei ddefnyddio ar gyfer unrhyw blaid fel gwelwn yn cael ei ddefnyddio pan fyddem yn
+rhagfynegi hwyrach ymlaen.
+</p>
+<div class="codes">
+<code>
+> tebygolrwydd_amodol <- function(plaid, colofn, gwerth, data) <br>
++ { <br>
++ &nbsp;&nbsp;rhifiadur <- sum(data[which(data[,"Plaid.Wleidyddol"]==plaid),names(data)[colofn]]==gwerth)+1 <br>
++ &nbsp;&nbsp;enwadur <- length(data[which(data[,"Plaid.Wleidyddol"]==plaid),names(data)[colofn]])+length(levels(etholiad[,colofn]))) <br>
++ &nbsp;&nbsp;rhifiadur/enwadur <br>
++ }
+</code>
+</div>
+<p>
+Gwelwn fod y ffwythiant uchod yn defnyddio’r dull cyfrif ffug. Yn y ffwythiant nesaf rydym yn cyfrifo y
+tebygolrwydd o bob plaid yn unigol.
+</p>
+<div class="codes">
+<code>
+> tebygolrwydd <- function(plaid, data) <br>
++ { <br>
++ &nbsp;&nbsp;sum(etholiad[,"Plaid.Wleidyddol"]==plaid)/length(etholiad[,"Plaid.Wleidyddol"]) <br>
++ }
+</code>
+</div>
+<p>
+Nawr mae gennym y ddwy gydran o’r fformiwla naïf Bayes. Mae’r ffwythiant isod yn defnyddio’r ddau
+ffwythiant blaenorol i gyfrifo’r tebygolrwydd o ddosbarthu y plyg i bob plaid. Wnawn wneud hyn gan creu
+fector gyda’r tebygolrwydd i bob plaid yn drefn briodol i hyn wnaethom gyda’r fector pleidiau ac yna cyfrifo’r
+uchafswm.
+</p>
+
+<div class="codes">
+<code>
+> rhagfynegi <- function(data, plyg) <br>
++ { <br>
++ &nbsp;&nbsp;pleidiau <- c("Plaid Geidwadol", "Plaid Lafur", "Democrataidd Rhyddfrydol", "Arall") <br>
++ &nbsp;&nbsp;fector_tebygolrwydd <- c() <br>
++ &nbsp;&nbsp;for (i in pleidiau) <br>
++ &nbsp;&nbsp;{ <br>
++ &nbsp;&nbsp;&nbsp;&nbsp;tebygolrwydd_plaid <- 1 <br>
++ &nbsp;&nbsp;&nbsp;&nbsp;for (j in 1:(length(names(data))-1)) <br>
++ &nbsp;&nbsp;&nbsp;&nbsp;{ <br>
++ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tebygolrwydd_plaid <- tebygolrwydd_plaid * tebygolrwydd_amodol(i, j, plyg[j], data) <br>
++ &nbsp;&nbsp;&nbsp;&nbsp;} <br>
++ &nbsp;&nbsp;&nbsp;&nbsp;tebygolrwydd_plaid <- tebygolrwydd_plaid * tebygolrwydd(i, data) <br>
++ &nbsp;&nbsp;&nbsp;&nbsp;fector_tebygolrwydd <- c(fector_tebygolrwydd, tebygolrwydd_plaid) <br>
++ &nbsp;&nbsp;} <br>
++ &nbsp;&nbsp;return(pleidiau[which.max(fector_tebygolrwydd)]) <br>
++ }
+</code>
+</div>
+
+<p>
+Nawr wnawn greu plyg i gael dosbarthu ei blaid. Defnyddiwn y nodweddion yma:
+</p>
+
+<div class="codes">
+<code>
+> plyg <- c("Lloegr", "Benyw", "Na", "Ty Rhes", "Na")	
+</code>
+</div>
+
+<div class="codes">
+<code>
+> rhagfynegi(data = etholiad,plyg = plyg) <br>
+[1] "Plaid Lafur"
+</code>
+</div>
+<p>
+Defnyddiwn y ffwythiant a chawsom allbwn fod y plyg yn cael ei dosbarthu i bleidleisio am Lafur. Wnawn
+creu plyg arall i profi’r algorithm:
+</p>
+<div class="codes">
+<code>
+> plyg <- c("Lloegr", "Gwryw", "Yndw", "Ty Rhes", "Yndw")
+</code>
+</div>
+
+<div class="codes">
+<code>
+> rhagfynegi(data = etholiad,plyg = plyg) <br>
+[1] "Plaid Ceidwadol"
+</code>
+</div>
+<p>
+Gan ddefnyddio’r ffwythiant cafodd y plyg yma ei dosbarthu i bleidleisio am Blaid Geidwadol.
+</p>
 		</div>
 	</section>
 
